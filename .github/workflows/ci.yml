@@ -1,35 +1,19 @@
 name: CI
 
-on:
-  push:
-    branches: [ main, master ]
-  pull_request:
-    branches: [ main, master ]
+on: [push, pull_request]
 
 jobs:
   test:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        python-version: ["3.9", "3.10", "3.11"]
-
+    
     steps:
     - uses: actions/checkout@v4
     
-    - name: Set up Python ${{ matrix.python-version }}
+    - name: Setup Python
       uses: actions/setup-python@v4
       with:
-        python-version: ${{ matrix.python-version }}
+        python-version: '3.x'
     
-    - name: Install dependencies
-      run: |
-        python -m pip install --upgrade pip
-        pip install pytest  # ← УСТАНАВЛИВАЕМ pytest
-    
-    - name: Run tests with pytest
-      run: |
-        python -m pytest tests/ -v
-      
-    - name: Run tests with unittest (альтернатива)
+    - name: Run tests
       run: |
         python -m unittest discover tests -v
